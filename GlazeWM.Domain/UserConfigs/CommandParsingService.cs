@@ -185,6 +185,12 @@ namespace GlazeWM.Domain.UserConfigs
         "down" => subjectContainer is Window
           ? new MoveWindowCommand(subjectContainer as Window, Direction.Down)
           : new NoopCommand(),
+        "next" => subjectContainer is Window
+          ? new MoveWindowInSequenceCommand(subjectContainer as Window, Sequence.Next)
+          : new NoopCommand(),
+        "prev" => subjectContainer is Window
+          ? new MoveWindowInSequenceCommand(subjectContainer as Window, Sequence.Previous)
+          : new NoopCommand(),
         "to" when IsValidWorkspace(commandParts[3]) => subjectContainer is Window
           ? new MoveWindowToWorkspaceCommand(subjectContainer as Window, commandParts[3])
           : new NoopCommand(),
