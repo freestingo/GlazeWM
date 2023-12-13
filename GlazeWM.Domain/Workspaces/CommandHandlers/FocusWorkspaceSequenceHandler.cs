@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using GlazeWM.Domain.Common.Enums;
+using GlazeWM.Domain.Monitors;
 using GlazeWM.Domain.UserConfigs;
 using GlazeWM.Domain.Workspaces.Commands;
 using GlazeWM.Infrastructure.Bussing;
@@ -11,15 +12,18 @@ namespace GlazeWM.Domain.Workspaces.CommandHandlers
   {
     private readonly Bus _bus;
     private readonly UserConfigService _userConfigService;
+    private readonly MonitorService _monitorService;
     private readonly WorkspaceService _workspaceService;
 
     public FocusWorkspaceSequenceHandler(
       Bus bus,
       UserConfigService userConfigService,
+      MonitorService monitorService,
       WorkspaceService workspaceService)
     {
       _bus = bus;
       _userConfigService = userConfigService;
+      _monitorService = monitorService;
       _workspaceService = workspaceService;
     }
 
@@ -28,9 +32,10 @@ namespace GlazeWM.Domain.Workspaces.CommandHandlers
       var direction = command.Direction;
       var workspacesConfigs = _userConfigService.WorkspaceConfigs;
 
-      // Get active workspaces in order of their config index.
-      var activeWorkspaces = _workspaceService.GetActiveWorkspaces();
-      var sortedWorkspaces = activeWorkspaces
+      // Get active workspaces for the current monitor in order of their config index.
+      var focusedMonitor = _monitorService.GetFocusedMonitor();
+      var sortedWorkspaces = _workspaceService
+        .GetActiveWorkspacesForMonitor(focusedMonitor)
         .OrderBy((workspace) =>
           workspacesConfigs.FindIndex((config) => config.Name == workspace.Name)
         )

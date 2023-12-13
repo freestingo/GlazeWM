@@ -29,6 +29,17 @@ namespace GlazeWM.Domain.Workspaces
         .Cast<Workspace>();
     }
 
+    /// <summary>
+    /// Get active workspaces for the given monitor.
+    /// </summary>
+    public IEnumerable<Workspace> GetActiveWorkspacesForMonitor(Monitor monitor)
+    {
+      return _containerService.ContainerTree.Children
+        .Where(m => m.Id == monitor.Id)
+        .SelectMany(m => m.Children)
+        .Cast<Workspace>();
+    }
+
     public Workspace GetActiveWorkspaceByName(string name)
     {
       return GetActiveWorkspaces().FirstOrDefault(workspace => workspace.Name == name);
