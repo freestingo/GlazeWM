@@ -84,6 +84,26 @@ namespace GlazeWM.Domain.Monitors
     }
 
     /// <summary>
+    /// Get monitor in a given sequence.
+    /// </summary>
+    /// <param name="sequence">Sequence to search in.</param>
+    /// <param name="originMonitor">The monitor to search from.</param>
+    /// <exception cref="ArgumentException"></exception>
+    public static Monitor GetMonitorInSequence(Sequence sequence, Monitor originMonitor)
+    {
+      var monitor = sequence switch
+      {
+        Sequence.Next => originMonitor.NextSiblingOfType<Monitor>()
+          ?? originMonitor.SelfAndSiblingsOfType<Monitor>().FirstOrDefault(),
+        Sequence.Previous => originMonitor.PreviousSiblingOfType<Monitor>()
+          ?? originMonitor.SelfAndSiblingsOfType<Monitor>().LastOrDefault(),
+        _ => throw new ArgumentException(null, nameof(sequence)),
+      };
+
+      return monitor as Monitor;
+    }
+
+    /// <summary>
     /// Get monitor in a given direction. Use i3wm's algorithm for finding best guess.
     /// </summary>
     /// <param name="direction">Direction to search in.</param>
