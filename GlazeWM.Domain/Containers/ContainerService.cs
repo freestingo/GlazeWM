@@ -166,6 +166,39 @@ namespace GlazeWM.Domain.Containers
     }
 
     /// <summary>
+    /// Traverse down a container in search of a descendant in the given sequence.
+    /// Returns the `originContainer` if no suitable descendants are found.
+    /// Any non-tiling containers are ignored.
+    /// </summary>
+    public Container GetDescendantInSequence(Container originContainer, Sequence sequence)
+    {
+      var isDescendable =
+        originContainer is SplitContainer &&
+        originContainer.ChildrenOfType<IResizable>().Any();
+
+      if (!isDescendable)
+        return originContainer;
+
+      var tilingDirection = (originContainer as SplitContainer).TilingDirection;
+
+      if (tilingDirection != TilingDirection.Vertical)
+        return GetDescendantInDirection(
+          originContainer.LastFocusedChildOfType<IResizable>(),
+          sequence is Sequence.Next ? Direction.Right : Direction.Left
+        );
+      else if (sequence is Sequence.Previous)
+        return GetDescendantInDirection(
+          originContainer.ChildrenOfType<IResizable>().First(),
+          Direction.Left
+        );
+      else
+        return GetDescendantInDirection(
+          originContainer.ChildrenOfType<IResizable>().Last(),
+          Direction.Right
+        );
+    }
+
+    /// <summary>
     /// Get the lowest container in the tree that has both `containerA` and `containerB` as
     /// descendants.
     /// </summary>

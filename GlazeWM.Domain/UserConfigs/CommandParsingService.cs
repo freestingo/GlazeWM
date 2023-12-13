@@ -136,6 +136,8 @@ namespace GlazeWM.Domain.UserConfigs
         "right" => new FocusInDirectionCommand(Direction.Right),
         "up" => new FocusInDirectionCommand(Direction.Up),
         "down" => new FocusInDirectionCommand(Direction.Down),
+        "next" => new FocusInSequenceCommand(Sequence.Next),
+        "prev" => new FocusInSequenceCommand(Sequence.Previous),
         "workspace" => ParseFocusWorkspaceCommand(commandParts),
         "monitor" => ParseFocusMonitorCommand(commandParts),
         "mode" => commandParts[2] switch

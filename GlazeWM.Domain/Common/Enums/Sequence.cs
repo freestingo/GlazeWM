@@ -1,3 +1,5 @@
+using System;
+
 namespace GlazeWM.Domain.Common.Enums
 {
   /// <summary>
@@ -7,5 +9,22 @@ namespace GlazeWM.Domain.Common.Enums
   {
     Previous,
     Next
+  }
+
+  public static class SequenceExtensions
+  {
+    /// <summary>
+    /// Get the inverse of a given sequence.
+    /// </summary>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public static Sequence Inverse(this Sequence sequence)
+    {
+      return sequence switch
+      {
+        Sequence.Next => Sequence.Previous,
+        Sequence.Previous => Sequence.Next,
+        _ => throw new ArgumentOutOfRangeException(nameof(sequence)),
+      };
+    }
   }
 }
