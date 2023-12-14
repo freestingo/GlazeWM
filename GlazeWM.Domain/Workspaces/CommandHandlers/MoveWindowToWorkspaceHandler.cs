@@ -44,8 +44,7 @@ namespace GlazeWM.Domain.Workspaces.CommandHandlers
 
       // Since target workspace could be on a different monitor, adjustments might need to be made
       // because of DPI.
-      if (MonitorService.HasDpiDifference(currentWorkspace, targetWorkspace))
-        windowToMove.HasPendingDpiAdjustment = true;
+      windowToMove.HasPendingDpiAdjustment = true;
 
       // Update floating placement if the window has to cross monitors.
       if (targetWorkspace.Parent != currentWorkspace.Parent)

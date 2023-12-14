@@ -56,6 +56,12 @@ namespace GlazeWM.Domain.Workspaces.CommandHandlers
         );
       }
 
+      // Re-adjust DPI for all the windows in the focused moved workspace.
+      focusedWorkspace
+        .ChildrenOfType<Window>().Cast<Window>()
+        .ToList()
+        .ForEach(window => window.HasPendingDpiAdjustment = true);
+
       // Prevent original monitor from having no workspaces.
       if (focusedMonitor.Children.Count == 0)
         ActivateWorkspaceOnMonitor(focusedMonitor);
