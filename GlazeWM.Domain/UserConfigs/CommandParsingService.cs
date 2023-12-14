@@ -187,6 +187,7 @@ namespace GlazeWM.Domain.UserConfigs
         "down" => subjectContainer is Window
           ? new MoveWindowCommand(subjectContainer as Window, Direction.Down)
           : new NoopCommand(),
+        "rotate" => ParseRotateCommand(commandParts, subjectContainer),
         "next" => subjectContainer is Window
           ? new MoveWindowInSequenceCommand(subjectContainer as Window, Sequence.Next)
           : new NoopCommand(),
@@ -197,6 +198,16 @@ namespace GlazeWM.Domain.UserConfigs
           ? new MoveWindowToWorkspaceCommand(subjectContainer as Window, commandParts[3])
           : new NoopCommand(),
         "workspace" => ParseMoveWorkspaceCommand(commandParts),
+        _ => throw new ArgumentException(null, nameof(commandParts)),
+      };
+    }
+
+    private static Command ParseRotateCommand(string[] commandParts, Container subjectContainer)
+    {
+      return commandParts[2] switch
+      {
+        "next" => new RotateWindowsCommand(subjectContainer as Window, Sequence.Next),
+        "prev" => new RotateWindowsCommand(subjectContainer as Window, Sequence.Previous),
         _ => throw new ArgumentException(null, nameof(commandParts)),
       };
     }
