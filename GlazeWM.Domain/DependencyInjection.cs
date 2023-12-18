@@ -73,6 +73,7 @@ namespace GlazeWM.Domain
       services.AddSingleton<ICommandHandler<SetMinimizedCommand>, SetMinimizedHandler>();
       services.AddSingleton<ICommandHandler<SetTilingCommand>, SetTilingHandler>();
       services.AddSingleton<ICommandHandler<SetWindowSizeCommand>, SetWindowSizeHandler>();
+      services.AddSingleton<ICommandHandler<ToggleMonocleCommand>, ToggleMonocleHandler>();
       services.AddSingleton<ICommandHandler<ToggleFloatingCommand>, ToggleFloatingHandler>();
       services.AddSingleton<ICommandHandler<ToggleMaximizedCommand>, ToggleMaximizedHandler>();
       services.AddSingleton<ICommandHandler<UnmanageWindowCommand>, UnmanageWindowHandler>();

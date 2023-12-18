@@ -274,6 +274,7 @@ namespace GlazeWM.Domain.UserConfigs
     {
       return commandParts[1] switch
       {
+        "monocle" => new ToggleMonocleCommand(),
         "floating" => subjectContainer is Window
           ? new ToggleFloatingCommand(subjectContainer as Window)
           : new NoopCommand(),
