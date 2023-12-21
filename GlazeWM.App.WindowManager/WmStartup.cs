@@ -101,7 +101,7 @@ namespace GlazeWM.App.WindowManager
 
         // Hook mouse event for focus follows cursor.
         if (_userConfigService.GeneralConfig.FocusFollowsCursor)
-          MouseEvents.MouseMoves.Sample(TimeSpan.FromMilliseconds(50)).Subscribe((@event) =>
+          MouseEvents.MouseMoves.Sample(TimeSpan.FromMilliseconds(100)).Subscribe((@event) =>
           {
             if (!@event.IsLMouseDown && !@event.IsRMouseDown)
               _bus.InvokeAsync(new FocusContainerUnderCursorCommand(@event.Point));
